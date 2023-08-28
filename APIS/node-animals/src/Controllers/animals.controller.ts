@@ -17,9 +17,4 @@ export class AnimalsController{
     findAll(){
         return this.animalService.findAll();
     }
-
-    @Get(':id')
-    findByID(){
-        return 'ff';
-    }
 }

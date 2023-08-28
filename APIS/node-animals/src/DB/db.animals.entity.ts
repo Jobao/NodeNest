@@ -1,18 +1,18 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
+@Entity('animales')
 export class AnimalesEntity{
 
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn('increment')
     id : number;
 
-    @Column()
+    @Column('name')
     name:string;
 
-    @Column()
+    @Column('id_raza')
     id_raza:number;
 
-    @Column()
+    @Column('tamable')
     tamable:boolean;
 
 }
