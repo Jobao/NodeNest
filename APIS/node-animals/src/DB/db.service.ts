@@ -1,30 +1,30 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AnimalesEntity } from './db.animals.entity';
+import { DB_AnimalesEntity } from './Entities/db.animals.entity';
 
 @Injectable()
 export class DB_AnimalService{
     constructor(
-        @InjectRepository(AnimalesEntity)
+        @InjectRepository(DB_AnimalesEntity)
         @Inject('ANIMAL_REPOSITORY')
-        private usersRepository: Repository<AnimalesEntity>,
+        private usersRepository: Repository<DB_AnimalesEntity>,
       ) {}
 
-      async findAll(): Promise<AnimalesEntity[]> {
+      async findAll(): Promise<DB_AnimalesEntity[]> {
         return await  this.usersRepository.find();
       }
 
-      p(): AnimalesEntity[]{
+      p(): DB_AnimalesEntity[]{
         console.log("AAA");
         return undefined;
       }
-      c(): AnimalesEntity[]{
+      c(): DB_AnimalesEntity[]{
         console.log("ccc");
         return undefined;
       }
 
-      newAnimal(nAnimal: AnimalesEntity){
+      newAnimal(nAnimal: DB_AnimalesEntity){
         this.usersRepository.insert(nAnimal);
       }
 }

@@ -1,6 +1,6 @@
 import {  Controller, Get, Post, Body} from '@nestjs/common';
 import { DB_AnimalService } from './db.service';
-import { AnimalesEntity } from './db.animals.entity';
+import { DB_AnimalesEntity } from './Entities/db.animals.entity';
 
 
 @Controller("API/Animals/DB")
@@ -15,7 +15,7 @@ export class DB_AnimalsController{
 */
 
     @Post()
-    addNew(@Body() newAnimal: AnimalesEntity){
+    addNew(@Body() newAnimal: DB_AnimalesEntity){
         this.animalService.newAnimal(newAnimal)
     }
 
