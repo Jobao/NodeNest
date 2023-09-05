@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, Patch } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductsEntity } from 'src/Entities/product.entity';
 import { Equal, Repository } from 'typeorm';
@@ -28,5 +28,13 @@ export class ProductService{
 
     insertNew(pNew: ProductsEntity){
         this.productRepository.insert(pNew);
+    }
+    
+    modifyProduct(id: number, pModified: ProductsEntity){
+        this.productRepository.update(id, pModified);
+    }
+
+    deleteProduct(id: number){
+        this.productRepository.delete(id);
     }
 }
