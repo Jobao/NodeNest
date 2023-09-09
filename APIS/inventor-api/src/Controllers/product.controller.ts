@@ -18,16 +18,16 @@ export class ProductsController{
     async createNewProduct(@Body() nProduct: ProductsEntity, @Body('category', ParseIntPipe) pp: number ){
         await this.categoryService.findById(pp).then((value) => {
             nProduct.id_category = value});
-        //console.log(nProduct);
+            
         this.productService.insertNew(nProduct);
         
     }
 
-    @Get('/a')
+    @Get('/findBycantity')
     async p(@Query('cant', ParseIntPipe) cant:number, @Query('filter') filter:string){
         return this.productService.findAllByCantity(cant, filter);
     }
-    @Get('/b')
+    @Get('/findByDescription')
     async d(@Query('description') desc:string){
         return this.productService.findProductByDescription(desc);
     }
