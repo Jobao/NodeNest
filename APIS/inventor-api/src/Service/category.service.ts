@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CategoryEntity } from 'src/Entities/category.entity';
 import { NumericType, Repository } from 'typeorm';
@@ -11,9 +11,24 @@ export class CategoryService{
     showAll(){
         return this.categoryRepository.find();
     }
-
-    getById(id: number){
-        return this.categoryRepository.findOneBy({id});
+    /**
+     * 
+     * @param id 
+     * @returns 
+     */
+    async findById(id: number): Promise<CategoryEntity>{
+        try{
+            return await this.categoryRepository.findOneBy({id}).then((result) => {
+                if(result != null){
+                    return result;
+                }
+                throw new HttpException("non-existent category", HttpStatus.NOT_FOUND);
+            });
+        }
+        catch(err){
+            throw err;
+        }
+        
     }
 
     insertNew(nCategory: CategoryEntity){

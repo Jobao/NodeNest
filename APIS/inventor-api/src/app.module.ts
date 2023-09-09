@@ -14,7 +14,7 @@ import { CategoryService } from './Service/category.service';
         entities: [ProductsEntity, CategoryEntity],
         synchronize: true,
         autoLoadEntities: true,
-  }), TypeOrmModule.forFeature([ProductsEntity, CategoryEntity])],
+  }), TypeOrmModule.forFeature([ProductsEntity, CategoryEntity]),],
   controllers: [ProductsController, CategoriesController],
   providers: [ProductService, CategoryService],
 })

@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query, Put, Body, Patch, Delete } from "@nestjs/common";
+import { Controller, Get, Param, Query, Put, Post, Body, Patch, Delete, BadRequestException, HttpCode, HttpException, HttpStatus, NotFoundException } from "@nestjs/common";
 import { ProductService } from "src/Service/product.service";
 import { ParseIntPipe } from '@nestjs/common';
 import { ProductsEntity } from "src/Entities/product.entity";
@@ -13,35 +13,42 @@ export class ProductsController{
     findAll(){
         return this.productService.showAll();
     }
-    @Get('/findByCategory')
-    findAllByCategoryID(@Query('id', ParseIntPipe) query:number){
-        return this.productService.showAllByCategory(query);
 
-    }
-
-    @Get(':id')
-    findByID(@Param('id') id: number){
-        return this.productService.showByID(id);
-        
-    }
-    @Put()
-    createNewProduct(@Body() nProduct: ProductsEntity){
-        this.categoryService.getById(nProduct.id_category.id).then((nuevo) =>{nProduct.id_category = nuevo});
+    @Post()
+    async createNewProduct(@Body() nProduct: ProductsEntity, @Body('category', ParseIntPipe) pp: number ){
+        await this.categoryService.findById(pp).then((value) => {
+            nProduct.id_category = value});
+        //console.log(nProduct);
         this.productService.insertNew(nProduct);
         
     }
 
+    @Get('/a')
+    async p(@Query('cant', ParseIntPipe) cant:number, @Query('filter') filter:string){
+        return this.productService.findAllByCantity(cant, filter);
+    }
+    
+    @Get('/findByCategory')
+    async findAllByCategoryID(@Query('id', ParseIntPipe) id_category:number){
+        await this.categoryService.findById(id_category);
+        return this.productService.showAllByCategory(id_category);
+
+    }
+
+    @Get(':id')
+    findByID(@Param('id', ParseIntPipe) id: number){
+        return this.productService.showByID(id);
+        
+    }
+    
+
     @Patch(':id')
-    modifyProduct(@Param('id') id: number, @Body() mProduct: ProductsEntity){
+    modifyProduct(@Param('id', ParseIntPipe) id: number, @Body() mProduct: ProductsEntity){
         this.productService.modifyProduct(id, mProduct);
     }
 
     @Delete(':id')
-    deleteProduct(@Param('id') id: number){
+    deleteProduct(@Param('id', ParseIntPipe) id: number){
         this.productService.deleteProduct(id);
     }
-
-    
-
-   
 }
