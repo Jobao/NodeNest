@@ -27,6 +27,10 @@ export class ProductsController{
     async p(@Query('cant', ParseIntPipe) cant:number, @Query('filter') filter:string){
         return this.productService.findAllByCantity(cant, filter);
     }
+    @Get('/b')
+    async d(@Query('description') desc:string){
+        return this.productService.findProductByDescription(desc);
+    }
     
     @Get('/findByCategory')
     async findAllByCategoryID(@Query('id', ParseIntPipe) id_category:number){

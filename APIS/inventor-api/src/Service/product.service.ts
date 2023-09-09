@@ -1,7 +1,7 @@
 import { Injectable, Inject, Patch, HttpException, HttpCode, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductsEntity } from 'src/Entities/product.entity';
-import { Equal, LessThan, MoreThan, Repository } from 'typeorm';
+import { Equal, LessThan, Like, MoreThan, Repository } from 'typeorm';
 
 @Injectable()
 export class ProductService{
@@ -69,6 +69,20 @@ export class ProductService{
                 throw new HttpException('Invalidad filter (Must be '+ this.findByCantityOperations.Equal +  ',' + this.findByCantityOperations.More +  ',' + this.findByCantityOperations.Less +')', HttpStatus.BAD_REQUEST);
             }
         }
+    }
+
+    async findProductByDescription(description: string){
+        if(description !== ''){
+            console.log(description);
+            
+            return this.productRepository.find({
+                where: {
+                    //SQL Injection ?????!!!!!
+                    desc:  Like(`%${description}%`)
+                }
+            });
+        }
+        throw new HttpException('DESCRIPTION must have a valid string', HttpStatus.BAD_REQUEST);
     }
 
     insertNew(pNew: ProductsEntity){
