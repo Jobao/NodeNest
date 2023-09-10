@@ -73,7 +73,6 @@ export class ProductService{
 
     async findProductByDescription(description: string){
         if(description !== ''){
-            console.log(description);
             
             return this.productRepository.find({
                 where: {
