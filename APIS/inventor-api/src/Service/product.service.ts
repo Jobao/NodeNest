@@ -22,8 +22,7 @@ export class ProductService{
         return p;
     }
     /**
-     * Shows all products with a given category. 
-     * IF the category does not exist it throws an exception (404)
+     * Shows all products with a given category.
      * @param id Category ID
      * @returns 
      */
@@ -33,7 +32,7 @@ export class ProductService{
         });
     }
 
-    async showByID(id: number): Promise<ProductsEntity>{
+    async findById(id: number): Promise<ProductsEntity>{
         return this.productRepository.findOneBy({id}).then((result) => {
             if(result != null){
                 return result;
@@ -85,14 +84,14 @@ export class ProductService{
     }
 
     insertNew(pNew: ProductsEntity){
-        this.productRepository.insert(pNew);
+        return this.productRepository.insert(pNew);
     }
     
     modifyProduct(id: number, pModified: ProductsEntity){
         this.productRepository.update(id, pModified);
     }
 
-    deleteProduct(id: number){
-        this.productRepository.delete(id);
+    async deleteProduct(id: number){
+        return (await this.productRepository.delete(id)).affected;
     }
 }

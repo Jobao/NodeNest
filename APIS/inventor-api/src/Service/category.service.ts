@@ -12,7 +12,7 @@ export class CategoryService{
         return this.categoryRepository.find();
     }
     /**
-     * 
+     * IF the category does not exist it throws an exception (404)
      * @param id 
      * @returns 
      */

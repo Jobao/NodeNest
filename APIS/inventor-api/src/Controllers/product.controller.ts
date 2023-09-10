@@ -18,7 +18,7 @@ export class ProductsController{
     async createNewProduct(@Body() nProduct: ProductsEntity, @Body('category', ParseIntPipe) pp: number ){
         await this.categoryService.findById(pp).then((value) => {
             nProduct.id_category = value});
-            
+
         this.productService.insertNew(nProduct);
         
     }
@@ -41,8 +41,7 @@ export class ProductsController{
 
     @Get(':id')
     findByID(@Param('id', ParseIntPipe) id: number){
-        return this.productService.showByID(id);
-        
+        return this.productService.findById(id);
     }
     
 
@@ -53,6 +52,7 @@ export class ProductsController{
 
     @Delete(':id')
     deleteProduct(@Param('id', ParseIntPipe) id: number){
-        this.productService.deleteProduct(id);
+        return this.productService.deleteProduct(id);
+        
     }
 }
