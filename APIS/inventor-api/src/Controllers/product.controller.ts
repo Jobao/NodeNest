@@ -47,7 +47,7 @@ export class ProductsController{
 
     @Patch(':id')
     modifyProduct(@Param('id', ParseIntPipe) id: number, @Body() mProduct: ProductsEntity){
-        this.productService.modifyProduct(id, mProduct);
+        return this.productService.modifyProduct(id, mProduct);
     }
 
     @Delete(':id')

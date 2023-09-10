@@ -1,7 +1,10 @@
 import { Injectable, Inject, Patch, HttpException, HttpCode, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CategoryEntity } from 'src/Entities/category.entity';
 import { ProductsEntity } from 'src/Entities/product.entity';
 import { Equal, LessThan, Like, MoreThan, Repository } from 'typeorm';
+import { CategoryService } from './category.service';
+import { log } from 'console';
 
 @Injectable()
 export class ProductService{
@@ -86,9 +89,9 @@ export class ProductService{
     insertNew(pNew: ProductsEntity){
         return this.productRepository.insert(pNew);
     }
-    
-    modifyProduct(id: number, pModified: ProductsEntity){
-        this.productRepository.update(id, pModified);
+    //BUG #1
+    async modifyProduct(id: number, pModified: ProductsEntity){
+        return (await this.productRepository.update(id, pModified)).affected;
     }
 
     async deleteProduct(id: number){
