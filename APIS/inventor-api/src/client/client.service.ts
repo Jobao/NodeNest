@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Query } from '@nestjs/common';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ClientEntity } from './entities/client.entity';
-import { Repository } from 'typeorm';
+import { FindManyOptions, FindOperator, FindOptionsWhere, Like, Repository } from 'typeorm';
+import { log } from 'console';
 
 @Injectable()
 export class ClientService {
@@ -30,5 +31,24 @@ export class ClientService {
 
   remove(id: number) {
     return this.clientRepository.delete(id);
+  }
+
+  async filteredFind(@Query() query){
+    var QueryOP: FindOptionsWhere<ClientEntity>[] = [];
+    
+    if(query['name']){
+      let nameQuery = query['name'];
+      QueryOP.push({name: Like(`%${nameQuery}%`)});
+      
+    }
+
+    if(query['address']){
+      let addQuery = query['address'];
+      if(QueryOP.length > 0){
+        QueryOP[0].address= Like(`%${addQuery}%`);
+      }
+    }
+    
+    return await this.clientRepository.find({where: QueryOP})
   }
 }

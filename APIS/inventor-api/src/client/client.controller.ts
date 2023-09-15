@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { ClientService } from './client.service';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
+import { query } from 'express';
 
 @Controller('API/Clients')
 export class ClientController {
@@ -15,6 +16,11 @@ export class ClientController {
   @Get()
   findAll() {
     return this.clientService.findAll();
+  }
+
+  @Get('/filterBy')
+  filterFind(@Query() query){
+    return this.clientService.filteredFind(query);
   }
 
   @Get(':id')
