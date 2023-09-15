@@ -37,15 +37,13 @@ export class ClientService {
     var QueryOP: FindOptionsWhere<ClientEntity>[] = [];
     
     if(query['name']){
-      let nameQuery = query['name'];
-      QueryOP.push({name: Like(`%${nameQuery}%`)});
+      QueryOP.push({name: Like(`%${query['name']}%`)});
       
     }
 
     if(query['address']){
-      let addQuery = query['address'];
       if(QueryOP.length > 0){
-        QueryOP[0].address= Like(`%${addQuery}%`);
+        QueryOP[0].address= Like(`%${query['address']}%`);
       }
     }
     
