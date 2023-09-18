@@ -3,6 +3,7 @@ import { ProductService } from "src/Service/product.service";
 import { ParseIntPipe } from '@nestjs/common';
 import { ProductsEntity } from "src/Entities/product.entity";
 import { CategoryService } from "src/Service/category.service";
+import { CreateProductDto } from "src/dto/products/create-product.dto";
 
 
 @Controller('API/Products')
@@ -15,9 +16,7 @@ export class ProductsController{
     }
 
     @Post()
-    async createNewProduct(@Body() nProduct: ProductsEntity, @Body('category', ParseIntPipe) pp: number ){
-        await this.categoryService.findById(pp).then((value) => {
-            nProduct.id_category = value});
+    async createNewProduct(@Body() nProduct: CreateProductDto){
 
         this.productService.insertNew(nProduct);
         
@@ -46,7 +45,7 @@ export class ProductsController{
     
 
     @Patch(':id')
-    modifyProduct(@Param('id', ParseIntPipe) id: number, @Body() mProduct: ProductsEntity){
+    modifyProduct(@Param('id', ParseIntPipe) id: number, @Body() mProduct: CreateProductDto){
         return this.productService.modifyProduct(id, mProduct);
     }
 

@@ -2,15 +2,18 @@ import { Injectable, Inject, Patch, HttpException, HttpCode, HttpStatus } from '
 import { InjectRepository } from '@nestjs/typeorm';
 import { CategoryEntity } from 'src/Entities/category.entity';
 import { ProductsEntity } from 'src/Entities/product.entity';
-import { Equal, LessThan, Like, MoreThan, Repository } from 'typeorm';
+import { Equal, FindManyOptions, FindOptionsWhere, LessThan, Like, MoreThan, Repository } from 'typeorm';
 import { CategoryService } from './category.service';
 import { log } from 'console';
+import { GetProductDto } from 'src/dto/products/get-product.dto';
+import { CreateProductDto } from 'src/dto/products/create-product.dto';
 
 @Injectable()
 export class ProductService{
     constructor(
         @InjectRepository(ProductsEntity)
-        private productRepository: Repository<ProductsEntity>
+        private productRepository: Repository<ProductsEntity>,
+        private categoryService: CategoryService
     ) {}
 
     readonly findByCantityOperations ={
@@ -35,62 +38,103 @@ export class ProductService{
         });
     }
 
-    async findById(id: number): Promise<ProductsEntity>{
+    async findById(id: number): Promise<GetProductDto>{
         return this.productRepository.findOneBy({id}).then((result) => {
             if(result != null){
-                return result;
+                let res: GetProductDto={
+                    id: result.id,
+                    desc: result.desc,
+                    cantidad: result.cantidad,
+                    categoryDesc: result.id_category.desc
+
+                };
+
+                return res;
             }
             throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
         });
     }
-
+    /**
+     * Busca todos los productos con una cantidad dada.
+     * @param cant 
+     * @param filter Must EQUAL, MORE, LESS
+     * @returns 
+     */
     async findAllByCantity(cant: number, filter: string){
+        let result: GetProductDto[]=[];
+        let finder: FindOptionsWhere<ProductsEntity>;
+
+        
         switch(filter.toUpperCase()){
             case this.findByCantityOperations.Equal:{
-                return this.productRepository.find({
-                    where: {
-                        cantidad: Equal(cant)
-                    }
-                });
+                finder={cantidad: Equal(cant)};
+                break;
             }
             case this.findByCantityOperations.More:{
-                return this.productRepository.find({
-                    where: {
-                        cantidad: MoreThan(cant)
-                    }
-                });
+                finder.cantidad = MoreThan(cant);
+                break;
             }
             case this.findByCantityOperations.Less:{
-                return this.productRepository.find({
-                    where: {
-                        cantidad: LessThan(cant)
-                    }
-                });
+                finder.cantidad = LessThan(cant);
+                break;
             }
             default:{
                 throw new HttpException('Invalidad filter (Must be '+ this.findByCantityOperations.Equal +  ',' + this.findByCantityOperations.More +  ',' + this.findByCantityOperations.Less +')', HttpStatus.BAD_REQUEST);
             }
         }
+
+       await this.productRepository.find({where: finder}).then((ret) =>{
+        ret.forEach(element => {
+            let aux: GetProductDto={
+                id: element.id,
+                desc: element.desc,
+                cantidad: element.cantidad,
+                categoryDesc: element.id_category.desc
+            };
+            result.push(aux);
+        });
+    
+    });
+       return result;
     }
 
     async findProductByDescription(description: string){
         if(description !== ''){
-            
-            return this.productRepository.find({
+            let result: GetProductDto[]=[];
+            return await this.productRepository.find({
                 where: {
                     //SQL Injection ?????!!!!!
                     desc:  Like(`%${description}%`)
                 }
+            }).then((ret) =>{
+                ret.forEach(element => {
+                    let aux: GetProductDto={
+                        id: element.id,
+                        desc: element.desc,
+                        cantidad: element.cantidad,
+                        categoryDesc: element.id_category.desc
+                    };
+                    result.push(aux);
+                })
+
+                return result;
             });
         }
         throw new HttpException('DESCRIPTION must have a valid string', HttpStatus.BAD_REQUEST);
     }
 
-    insertNew(pNew: ProductsEntity){
+    async insertNew(pNew: CreateProductDto){
+        /*let cat: CategoryEntity;
+        cat = await this.categoryService.findById(pNew.id_category.id);
+        let ent: ProductsEntity={
+            desc: pNew.desc,
+            cantidad: pNew.cantidad,
+            id_category: cat
+        }*/
         return this.productRepository.insert(pNew);
     }
     //BUG #1
-    async modifyProduct(id: number, pModified: ProductsEntity){
+    async modifyProduct(id: number, pModified: CreateProductDto){
         return (await this.productRepository.update(id, pModified)).affected;
     }
 
