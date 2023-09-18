@@ -7,6 +7,7 @@ import { ProductsController } from '../Controllers/product.controller';
 import { CategoriesController } from '../Controllers/category.controller';
 import { CategoryService } from '../Service/category.service';
 import { ClientModule } from './client.module';
+import { EmpleadosModule } from './empleados.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -15,7 +16,7 @@ import { ClientModule } from './client.module';
         entities: [ProductsEntity, CategoryEntity],
         synchronize: true,
         autoLoadEntities: true,
-  }), TypeOrmModule.forFeature([ProductsEntity, CategoryEntity]), ClientModule,],
+  }), TypeOrmModule.forFeature([ProductsEntity, CategoryEntity]), ClientModule, EmpleadosModule],
   controllers: [ProductsController, CategoriesController],
   providers: [ProductService, CategoryService],
 })
