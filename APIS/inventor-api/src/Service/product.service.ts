@@ -1,19 +1,15 @@
-import { Injectable, Inject, Patch, HttpException, HttpCode, HttpStatus } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CategoryEntity } from 'src/Entities/category.entity';
 import { ProductsEntity } from 'src/Entities/product.entity';
-import { Equal, FindManyOptions, FindOptionsWhere, LessThan, Like, MoreThan, Repository } from 'typeorm';
-import { CategoryService } from './category.service';
-import { log } from 'console';
-import { GetProductDto } from 'src/dto/products/get-product.dto';
 import { CreateProductDto } from 'src/dto/products/create-product.dto';
+import { GetProductDto } from 'src/dto/products/get-product.dto';
+import { Equal, FindOptionsWhere, LessThan, Like, MoreThan, Repository } from 'typeorm';
 
 @Injectable()
 export class ProductService{
     constructor(
         @InjectRepository(ProductsEntity)
-        private productRepository: Repository<ProductsEntity>,
-        private categoryService: CategoryService
+        private productRepository: Repository<ProductsEntity>
     ) {}
 
     readonly findByCantityOperations ={

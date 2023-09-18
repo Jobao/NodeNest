@@ -1,9 +1,9 @@
-import { Injectable, Inject, HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CategoryEntity } from 'src/Entities/category.entity';
 import { CategoryDto } from 'src/dto/Category/category.dto';
 import { GetCategoryDto } from 'src/dto/Category/get-Category.dto';
-import { NumericType, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class CategoryService{

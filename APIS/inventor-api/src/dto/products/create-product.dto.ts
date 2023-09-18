@@ -1,7 +1,6 @@
-import { IsNotEmpty, IsNumber} from "class-validator";
-import { ProductDto } from "./product.dto";
-import { CategoryDto } from "../Category/category.dto";
+import { IsNotEmpty } from "class-validator";
 import { GetCategoryDto } from "../Category/get-Category.dto";
+import { ProductDto } from "./product.dto";
 
 export class CreateProductDto extends ProductDto {
 

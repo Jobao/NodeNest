@@ -1,8 +1,6 @@
-import { Controller, Get, Param, Query, Put, Post, Body, Patch, Delete, BadRequestException, HttpCode, HttpException, HttpStatus, NotFoundException } from "@nestjs/common";
-import { ProductService } from "src/Service/product.service";
-import { ParseIntPipe } from '@nestjs/common';
-import { ProductsEntity } from "src/Entities/product.entity";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from "@nestjs/common";
 import { CategoryService } from "src/Service/category.service";
+import { ProductService } from "src/Service/product.service";
 import { CreateProductDto } from "src/dto/products/create-product.dto";
 
 
