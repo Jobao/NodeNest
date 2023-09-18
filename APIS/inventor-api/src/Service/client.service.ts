@@ -1,10 +1,9 @@
 import { Injectable, Query } from '@nestjs/common';
-import { CreateClientDto } from '../dto/create-client.dto';
-import { UpdateClientDto } from '../dto/update-client.dto';
+import { CreateClientDto } from '../dto/client/create-client.dto';
+import { UpdateClientDto } from '../dto/client/update-client.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ClientEntity } from '../Entities/client.entity';
-import { FindManyOptions, FindOperator, FindOptionsWhere, Like, Repository } from 'typeorm';
-import { log } from 'console';
+import {FindOptionsWhere, Like, Repository } from 'typeorm';
 
 @Injectable()
 export class ClientService {
