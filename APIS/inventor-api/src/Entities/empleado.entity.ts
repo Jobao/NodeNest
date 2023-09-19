@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { AuthEntity } from "src/auth/auth.entity";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('Empleados')
 export class EmpleadoEntity {
@@ -8,5 +9,10 @@ export class EmpleadoEntity {
     @Column('varchar')
     nombre: string;
 
-    //Aca se debera agregar roles
+   
+    @OneToOne(() => AuthEntity)
+    @JoinColumn()
+    authId: AuthEntity;
+
+     //Aca se debera agregar roles
 }

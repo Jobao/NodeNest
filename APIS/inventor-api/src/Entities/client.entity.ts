@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { AuthEntity } from "src/auth/auth.entity";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('clients')
 export class ClientEntity {
@@ -18,5 +19,7 @@ export class ClientEntity {
     @Column({type: "varchar", nullable: true})
     email: string;
 
-
+    @OneToOne(() => AuthEntity)
+    @JoinColumn()
+    authId: AuthEntity;
 }
