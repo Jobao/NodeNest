@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { EmpleadosService } from '../Service/empleados.service';
-import { CreateEmpleadoDto } from '../dto/empleados/create-empleado.dto';
+import { EmpleadoDto } from '../dto/empleados/create-empleado.dto';
 import { UpdateEmpleadoDto } from '../dto/empleados/update-empleado.dto';
 
 @Controller('API/empleados')
@@ -8,7 +8,7 @@ export class EmpleadosController {
   constructor(private readonly empleadosService: EmpleadosService) {}
 
   @Post()
-  create(@Body() createEmpleadoDto: CreateEmpleadoDto) {
+  create(@Body() createEmpleadoDto: EmpleadoDto) {
     return this.empleadosService.create(createEmpleadoDto);
   }
 

@@ -1,26 +1,33 @@
 import { Injectable } from '@nestjs/common';
-import { CreateEmpleadoDto } from '../dto/empleados/create-empleado.dto';
+import { EmpleadoDto } from '../dto/empleados/create-empleado.dto';
 import { UpdateEmpleadoDto } from '../dto/empleados/update-empleado.dto';
+import { EmpleadoEntity } from 'src/Entities/empleado.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class EmpleadosService {
-  create(createEmpleadoDto: CreateEmpleadoDto) {
-    return 'This action adds a new empleado';
+  constructor(
+    @InjectRepository(EmpleadoEntity)
+    private empleadoRepository: Repository<EmpleadoEntity>
+) {}
+  create(createEmpleadoDto: EmpleadoDto) {
+    return this.empleadoRepository.insert(createEmpleadoDto);
   }
 
   findAll() {
-    return `This action returns all empleados`;
+    return this.empleadoRepository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} empleado`;
+    return this.empleadoRepository.findOneBy({id});
   }
 
   update(id: number, updateEmpleadoDto: UpdateEmpleadoDto) {
-    return `This action updates a #${id} empleado`;
+    return this.empleadoRepository.update(id, updateEmpleadoDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} empleado`;
+    return this.empleadoRepository.delete({id});
   }
 }

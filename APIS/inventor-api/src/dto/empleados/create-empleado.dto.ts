@@ -1,1 +1,4 @@
-export class CreateEmpleadoDto {}
+export class EmpleadoDto {
+
+    nombre: string;
+}
