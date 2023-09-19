@@ -12,7 +12,7 @@ import { EmpleadosModule } from './modules/empleados.module';
 @Module({
   imports: [TypeOrmModule.forRoot({
     type: 'sqlite',
-        database: 'inventoryapi2',
+        database: 'inventoryapi2.sqlite3',
         entities: [ProductsEntity, CategoryEntity],
         synchronize: true,
         autoLoadEntities: true,
